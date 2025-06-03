@@ -41,7 +41,10 @@
                 <input class="form-check-input" type="checkbox" name="AtividadesSelecionadasIds" value="@atividade.CodAtv" id="atv_@atividade.CodAtv" />
                 <label class="form-check-label" for="atv_@atividade.CodAtv">
                     @atividade.DescAtv (@atividade.Preco.ToString("C"))
-                </label>
+                    <label class="form-check-label" for="atv_@atividade.CodAtv">
+                        @atividade.DescAtv (@atividade.Preco.ToString("C")) - @atividade.Vagas vagas
+                    </label>
+
             </div>
         }
     </div>
