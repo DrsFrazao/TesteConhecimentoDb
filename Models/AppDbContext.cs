@@ -15,13 +15,25 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Pacote>().HasData(
-            new Pacote { CodPacote = 1, Descricao = "Gold", Preco = 100.00m, DataViradaPreco = new DateTime(2025, 7, 1) },
-            new Pacote { CodPacote = 2, Descricao = "Platinum", Preco = 150.00m, DataViradaPreco = new DateTime(2025, 7, 1) }
+            new Pacote
+            {
+                CodPacote = 1,
+                Descricao = "Gold",
+                PrecoAntesVirada = 100.00m,
+                PrecoAposVirada = 150.00m,
+                DataViradaPreco = new DateTime(2025, 7, 1)
+            },
+    new Pacote
+    {
+        CodPacote = 2,
+        Descricao = "Platinum",
+        PrecoAntesVirada = 150.00m,
+        PrecoAposVirada = 200.00m,
+        DataViradaPreco = new DateTime(2025, 7, 1)
+    });
 
-                );
 
-
-                modelBuilder.Entity<AxParticipantePacote>().HasKey(x => new { x.CodPar, x.CodPacote });
+        modelBuilder.Entity<AxParticipantePacote>().HasKey(x => new { x.CodPar, x.CodPacote });
 
         modelBuilder.Entity<AxParticipantePacote>()
             .HasOne(x => x.Participante)

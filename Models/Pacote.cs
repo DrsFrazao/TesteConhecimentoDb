@@ -6,9 +6,17 @@ namespace TesteConhecimentoDb.Models
     {
         [Key]
         public int CodPacote { get; set; }
+
         public string Descricao { get; set; } = string.Empty;
-        public decimal Preco { get; set; }
+
+        public decimal PrecoAntesVirada { get; set; }
+
+        public decimal PrecoAposVirada { get; set; }
+
         public DateTime DataViradaPreco { get; set; }
+
+        // Preço válido no momento
+        public decimal PrecoVigente => DateTime.Now >= DataViradaPreco ? PrecoAposVirada : PrecoAntesVirada;
 
         public virtual ICollection<AxParticipantePacote> AxParticipantePacotes { get; set; } = new List<AxParticipantePacote>();
     }

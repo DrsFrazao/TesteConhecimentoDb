@@ -20,8 +20,13 @@
 
         <dt class="col-sm-2">Pacote</dt>
         <dd class="col-sm-10">
-            @Model.PacotesDisponiveis.FirstOrDefault(p => p.CodPacote == Model.PacoteSelecionadoId)?.Descricao
+            @{
+                var pacote = Model.PacotesDisponiveis.FirstOrDefault(p => p.CodPacote == Model.PacoteSelecionadoId);
+            }
+            @pacote?.Descricao -
+            @(DateTime.Now >= pacote?.DataViradaPreco ? pacote?.PrecoAposVirada.ToString("C") : pacote?.PrecoAntesVirada.ToString("C"))
         </dd>
+
 
         <dt class="col-sm-2">Atividades</dt>
         <dd class="col-sm-10">
