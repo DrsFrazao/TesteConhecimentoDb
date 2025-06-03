@@ -17,7 +17,7 @@
         <dt class="col-sm-2">Telefone</dt>
         <dd class="col-sm-10">@Model.Telefone</dd>
 
-        
+
         <dt class="col-sm-2">Pacote</dt>
         <dd class="col-sm-10">
             @Model.PacotesDisponiveis.FirstOrDefault(p => p.CodPacote == Model.PacoteSelecionadoId)?.Descricao
@@ -31,11 +31,9 @@
                     var atividade = Model.AtividadesDisponiveis.FirstOrDefault(a => a.CodAtv == atvId);
                     if (atividade != null)
                     {
-                      
-
-
-                        <li>@atividade.DescAtv - @atividade.Preco.ToString("C") - @atividade.Vagas vaga(s)</li>
-
+                        <li>
+                            @atividade.DescAtv - @atividade.Preco.ToString("C") - @atividade.Vagas vaga(s)
+                        </li>
                     }
                 }
             </ul>
@@ -43,7 +41,7 @@
     </dl>
 </div>
 
-<form asp-action="Create" method="post">
+<form asp-action="Salvar" method="post">
     @* Enviar os dados de volta no POST final *@
     <input type="hidden" name="Nome" value="@Model.Nome" />
     <input type="hidden" name="DataNascimento" value="@Model.DataNascimento.ToString("yyyy-MM-dd")" />

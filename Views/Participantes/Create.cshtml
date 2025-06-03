@@ -6,7 +6,7 @@
 
 <h1>Formulário de Inscrição</h1>
 
-<form asp-action="Create" method="post">
+<form asp-action="Confirmacao" method="post">
     <div class="form-group">
         <label asp-for="Nome"></label>
         <input asp-for="Nome" class="form-control" />
@@ -40,11 +40,8 @@
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" name="AtividadesSelecionadasIds" value="@atividade.CodAtv" id="atv_@atividade.CodAtv" />
                 <label class="form-check-label" for="atv_@atividade.CodAtv">
-                    @atividade.DescAtv (@atividade.Preco.ToString("C"))
-                    <label class="form-check-label" for="atv_@atividade.CodAtv">
-                        @atividade.DescAtv (@atividade.Preco.ToString("C")) - @atividade.Vagas vagas
-                    </label>
-
+                    @atividade.DescAtv (@atividade.Preco.ToString("C")) - @atividade.Vagas vaga(s)
+                </label>
             </div>
         }
     </div>

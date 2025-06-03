@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+
 using TesteConhecimentoDb.Models;
 
 namespace TesteConhecimentoDb.Controllers
@@ -14,7 +13,7 @@ namespace TesteConhecimentoDb.Controllers
             _context = context;
         }
 
-        // GET: Participantes/Create
+        // Tela inicial de criação
         public IActionResult Create()
         {
             var viewModel = new ParticipanteInscricaoViewModel
@@ -26,51 +25,50 @@ namespace TesteConhecimentoDb.Controllers
             return View(viewModel);
         }
 
-        // POST: Participantes/Create
+        // POST após preencher o formulário → mostra revisão
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ParticipanteInscricaoViewModel viewModel)
+        public IActionResult Confirmacao(ParticipanteInscricaoViewModel viewModel)
         {
-            if (ModelState.IsValid)
-            {
-                var participante = new Participante
-                {
-                    Nome = viewModel.Nome,
-                    DataNascimento = viewModel.DataNascimento,
-                    Telefone = viewModel.Telefone,
-                    AxParticipantePacotes = new List<AxParticipantePacote>
-                    {
-                        new AxParticipantePacote
-                        {
-                            CodPacote = viewModel.PacoteSelecionadoId
-                        }
-                    },
-                    AxParticipanteAtividades = viewModel.AtividadesSelecionadasIds.Select(id => new AxParticipanteAtividade
-                    {
-                        CodAtv = id
-                    }).ToList()
-                };
-
-                _context.Participantes.Add(participante);
-                await _context.SaveChangesAsync();
-
-                return RedirectToAction("Confirmacao", viewModel);
-            }
-
-            // Caso o ModelState seja inválido, reenvia os dados pro form
             viewModel.PacotesDisponiveis = _context.Pacotes.ToList();
             viewModel.AtividadesDisponiveis = _context.Atividades.ToList();
-
             return View(viewModel);
         }
 
-        public IActionResult Confirmacao(ParticipanteInscricaoViewModel dados)
+        // POST após clicar em "Confirmar e Salvar"
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Salvar(ParticipanteInscricaoViewModel viewModel)
         {
-            dados.PacotesDisponiveis = _context.Pacotes.ToList();
-            dados.AtividadesDisponiveis = _context.Atividades.ToList();
-            return View(dados);
+            var participante = new Participante
+            {
+                Nome = viewModel.Nome,
+                DataNascimento = viewModel.DataNascimento,
+                Telefone = viewModel.Telefone,
+                AxParticipantePacotes = new List<AxParticipantePacote>
+                {
+                    new AxParticipantePacote
+                    {
+                        CodPacote = viewModel.PacoteSelecionadoId
+                    }
+                },
+                AxParticipanteAtividades = viewModel.AtividadesSelecionadasIds
+                    .Select(id => new AxParticipanteAtividade { CodAtv = id })
+                    .ToList()
+            };
+
+            _context.Participantes.Add(participante);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Sucesso");
         }
 
+        // Tela de sucesso
+        public IActionResult Sucesso()
+        {
+            return View();
+        }
+   
 
     }
 }
