@@ -1,0 +1,59 @@
+﻿@model TesteConhecimentoDb.Models.ParticipanteInscricaoViewModel
+
+@{
+    ViewData["Title"] = "Confirmação";
+}
+
+<h1>Confirmação dos Dados</h1>
+
+<div class="card p-4">
+    <dl class="row">
+        <dt class="col-sm-2">Nome</dt>
+        <dd class="col-sm-10">@Model.Nome</dd>
+
+        <dt class="col-sm-2">Data de Nascimento</dt>
+        <dd class="col-sm-10">@Model.DataNascimento.ToShortDateString()</dd>
+
+        <dt class="col-sm-2">Telefone</dt>
+        <dd class="col-sm-10">@Model.Telefone</dd>
+
+        
+        <dt class="col-sm-2">Pacote</dt>
+        <dd class="col-sm-10">
+            @Model.PacotesDisponiveis.FirstOrDefault(p => p.CodPacote == Model.PacoteSelecionadoId)?.Descricao
+        </dd>
+
+        <dt class="col-sm-2">Atividades</dt>
+        <dd class="col-sm-10">
+            <ul>
+                @foreach (var atvId in Model.AtividadesSelecionadasIds)
+                {
+                    var atividade = Model.AtividadesDisponiveis.FirstOrDefault(a => a.CodAtv == atvId);
+                    if (atividade != null)
+                    {
+                      
+
+
+                        <li>@atividade.DescAtv - @atividade.Preco.ToString("C") - @atividade.Vagas vaga(s)</li>
+
+                    }
+                }
+            </ul>
+        </dd>
+    </dl>
+</div>
+
+<form asp-action="Create" method="post">
+    @* Enviar os dados de volta no POST final *@
+    <input type="hidden" name="Nome" value="@Model.Nome" />
+    <input type="hidden" name="DataNascimento" value="@Model.DataNascimento.ToString("yyyy-MM-dd")" />
+    <input type="hidden" name="Telefone" value="@Model.Telefone" />
+    <input type="hidden" name="PacoteSelecionadoId" value="@Model.PacoteSelecionadoId" />
+    @foreach (var atvId in Model.AtividadesSelecionadasIds)
+    {
+        <input type="hidden" name="AtividadesSelecionadasIds" value="@atvId" />
+    }
+
+    <button type="submit" class="btn btn-success">Confirmar e Salvar</button>
+    <a asp-action="Create" class="btn btn-secondary">Voltar</a>
+</form>

@@ -1,0 +1,56 @@
+﻿@model TesteConhecimentoDb.Models.ParticipanteInscricaoViewModel
+
+@{
+    ViewData["Title"] = "Inscrição";
+}
+
+<h1>Formulário de Inscrição</h1>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Nome"></label>
+        <input asp-for="Nome" class="form-control" />
+        <span asp-validation-for="Nome" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DataNascimento"></label>
+        <input asp-for="DataNascimento" class="form-control" type="date" />
+        <span asp-validation-for="DataNascimento" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Telefone"></label>
+        <input asp-for="Telefone" class="form-control" />
+        <span asp-validation-for="Telefone" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PacoteSelecionadoId">Pacote</label>
+        <select asp-for="PacoteSelecionadoId" asp-items="@(new SelectList(Model.PacotesDisponiveis, "CodPacote", "Descricao"))" class="form-control">
+            <option value="">Selecione um pacote</option>
+        </select>
+        <span asp-validation-for="PacoteSelecionadoId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Atividades</label>
+        @foreach (var atividade in Model.AtividadesDisponiveis)
+        {
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="AtividadesSelecionadasIds" value="@atividade.CodAtv" id="atv_@atividade.CodAtv" />
+                <label class="form-check-label" for="atv_@atividade.CodAtv">
+                    @atividade.DescAtv (@atividade.Preco.ToString("C"))
+                </label>
+            </div>
+        }
+    </div>
+
+    <button type="submit" class="btn btn-primary">Confirmar Inscrição</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
