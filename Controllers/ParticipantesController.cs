@@ -60,6 +60,19 @@ namespace TesteConhecimentoDb.Controllers
             _context.Participantes.Add(participante);
             await _context.SaveChangesAsync();
 
+            // Atualizar o número de vagas das atividades selecionadas
+            foreach (var id in viewModel.AtividadesSelecionadasIds)
+            {
+                var atividade = await _context.Atividades.FindAsync(id);
+                if (atividade != null && atividade.Vagas > 0)
+                {
+                    atividade.Vagas -= 1;
+                }
+            }
+
+            await _context.SaveChangesAsync(); // Salvar as alterações nas vagas
+
+
             return RedirectToAction("Sucesso");
         }
 
